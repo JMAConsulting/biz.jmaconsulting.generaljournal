@@ -142,14 +142,23 @@ function generaljournal_civicrm_preProcess($formName, &$form) {
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
  *
+ */
 function generaljournal_civicrm_navigationMenu(&$menu) {
-  _generaljournal_civix_insert_navigation_menu($menu, NULL, array(
-    'label' => ts('The Page', array('domain' => 'biz.jmaconsulting.generaljournal')),
-    'name' => 'the_page',
-    'url' => 'civicrm/the-page',
-    'permission' => 'access CiviReport,access CiviContribute',
-    'operator' => 'OR',
+  _generaljournal_civix_insert_navigation_menu($menu, 'Contributions', array(
+    'label' => ts('New General Journal Entry', array('domain' => 'biz.jmaconsulting.generaljournal')),
+    'name' => 'new_general_journal_entry',
+    'url' => 'civicrm/contribute/journalentry?reset=1',
+    'permission' => 'access CiviContribute,administer Accounting',
+    'operator' => 'AND',
+    'separator' => 0,
+  ));
+  _generaljournal_civix_insert_navigation_menu($menu, 'Contributions', array(
+    'label' => ts('Manage General Journal Entries', array('domain' => 'biz.jmaconsulting.generaljournal')),
+    'name' => 'manage_general_journal_entries',
+    'url' => 'civicrm/contribute/journalentries?reset=1',
+    'permission' => 'access CiviContribute,administer Accounting',
+    'operator' => 'AND',
     'separator' => 0,
   ));
   _generaljournal_civix_navigationMenu($menu);
-} // */
+} 
