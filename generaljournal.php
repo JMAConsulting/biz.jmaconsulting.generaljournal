@@ -84,6 +84,27 @@ function generaljournal_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
  */
 function generaljournal_civicrm_managed(&$entities) {
   _generaljournal_civix_civicrm_managed($entities);
+  $result = civicrm_api3('OptionValue', 'getcount', array(
+    'option_group_id' => 'financial_item_status',
+    'name' => 'Other',
+  ));
+  if (!$result) {
+    $apiParams = array(
+      'version' => 3,
+      'label' => ts('Other'),
+      'name' => 'Other',
+      'description' => ts('Other'),
+      'option_group_id' => 'financial_item_status',
+      'component_id' => 'CiviContribute',
+      'is_reserved' => TRUE,
+    );
+    $entities[] = array(
+      'module' => 'biz.jmaconsulting.generaljournal',
+      'name' => 'general_journal_entry',
+      'entity' => 'OptionValue',
+      'params' => $apiParams,
+    );
+  }
 }
 
 /**
