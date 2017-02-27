@@ -122,6 +122,24 @@ class CRM_Generaljournal_Form_JournalEntry extends CRM_Core_Form {
    * Process the form submission.
    */
   public function postProcess() {
-    parent::postProcess();
+    $submittedValues = $this->controller->exportValues($this->_name);
+
+    // Add Journal entry
+    CRM_Generaljournal_BAO_JournalEntries::createJournalEntry($submittedValues);
+
+    CRM_Core_Session::setStatus(ts('General Journal entry has been created.'), ts('Saved'), 'success');
+    $buttonName = $this->controller->getButtonName();
+    if ($buttonName == $this->getButtonName('upload', 'new')) {
+      CRM_Core_Session::singleton()->replaceUserContext(CRM_Utils_System::url(
+        'civicrm/contribute/journalentry',
+        'reset=1&action=add'
+      ));
+    }
+    else {
+      CRM_Core_Session::singleton()->replaceUserContext(CRM_Utils_System::url(
+        'civicrm/contribute/journalentries',
+        'reset=1'
+      ));
+    }
   }
 }

@@ -77,4 +77,53 @@ class CRM_Generaljournal_BAO_JournalEntries extends CRM_Core_DAO {
     return array($results, $object->N);
   }
 
+  /**
+   * create Journal Entry.
+   *
+   * @param array $params
+   *   Associated array for params.
+   *
+   */
+  public static function createJournalEntry($params) {
+    $params['amount'] = CRM_Utils_Rule::cleanMoney($params['amount']);
+    // create financial item entry
+    $financialItemStatusID = civicrm_api3('OptionValue', 'getvalue', array(
+      'return' => 'value',
+      'option_group_id' => 'financial_item_status',
+      'name' => 'Other',
+    ));
+    $financialItemParams = array(
+      'created_date' => date('Ymd'),
+      'transaction_date' => date('Ymd', strtotime($params['date'])),
+      'contact_id' => CRM_Core_Session::singleton()->get('userID'),
+      'description' => $params['description'],
+      'amount' => $params['amount'],
+      'currency' => $params['currency'],
+      'financial_account_id' => $params['from_financial_account_id'],
+      'status_id' => $financialItemStatusID,
+    );
+    $financialItem = civicrm_api3('financialItem', 'create', $financialItemParams);
+
+    // create financial trxn entry
+    $trxnStatusID = civicrm_api3('OptionValue', 'getvalue', array(
+      'return' => 'value',
+      'option_group_id' => 'contribution_status',
+      'name' => 'Completed',
+    ));
+    $financialTrxnParams = array(
+      'to_financial_account_id' => $params['to_financial_account_id'],
+      'trxn_date' => date('Ymd', strtotime($params['date'])),
+      'total_amount' => $params['amount'],
+      'fee_amount' => 0,
+      'net_amount' => $params['amount'],
+      'currency' => $params['currency'],
+      'status_id' => $trxnStatusID,
+    );
+    $trxnEntityTable = array(
+      'entity_table' => "civicrm_financial_item",
+      'entity_id' => $financialItem['id'],
+    );
+    CRM_Core_BAO_FinancialTrxn::create($financialTrxnParams, $trxnEntityTable);
+  }
+
 }
