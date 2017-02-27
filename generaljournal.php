@@ -168,7 +168,7 @@ function generaljournal_civicrm_navigationMenu(&$menu) {
   _generaljournal_civix_insert_navigation_menu($menu, 'Contributions', array(
     'label' => ts('New General Journal Entry', array('domain' => 'biz.jmaconsulting.generaljournal')),
     'name' => 'new_general_journal_entry',
-    'url' => 'civicrm/contribute/journalentry?reset=1',
+    'url' => 'civicrm/contribute/journalentry?reset=1&action=add',
     'permission' => 'access CiviContribute,administer Accounting',
     'operator' => 'AND',
     'separator' => 0,

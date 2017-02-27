@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/contribute/journalentry</path>
+    <title>New General Journal Entry</title>
+    <page_callback>CRM_Generaljournal_Form_JournalEntry</page_callback>
+    <access_arguments>access CiviContribute,administer Accounting</access_arguments>
+    <page_type>1</page_type>
+    <weight>640</weight>
+    <component>CiviContribute</component>
+  </item>
+  <item>
+    <path>civicrm/contribute/journalentries</path>
+    <title>Manage General Journal Entries</title>
+    <page_callback></page_callback>
+    <access_arguments>access CiviContribute,administer Accounting</access_arguments>
+    <page_type>1</page_type>
+    <weight>641</weight>
+    <component>CiviContribute</component>
+  </item>
+</menu>
