@@ -12,10 +12,15 @@
   <item>
     <path>civicrm/contribute/journalentries</path>
     <title>Manage General Journal Entries</title>
-    <page_callback></page_callback>
+    <page_callback>CRM_Generaljournal_Page_JournalEntries</page_callback>
     <access_arguments>access CiviContribute,administer Accounting</access_arguments>
     <page_type>1</page_type>
     <weight>641</weight>
     <component>CiviContribute</component>
+  </item>
+  <item>
+     <path>civicrm/ajax/journalentries</path>
+     <page_callback>CRM_Generaljournal_Page_AJAX::getJournalEntries</page_callback>
+     <access_arguments>access CiviContribute,administer Accounting</access_arguments>
   </item>
 </menu>
