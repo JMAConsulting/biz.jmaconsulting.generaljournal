@@ -123,7 +123,14 @@ class CRM_Generaljournal_BAO_JournalEntries extends CRM_Core_DAO {
       'entity_table' => "civicrm_financial_item",
       'entity_id' => $financialItem['id'],
     );
-    CRM_Core_BAO_FinancialTrxn::create($financialTrxnParams, $trxnEntityTable);
+    $financialTrxn = CRM_Core_BAO_FinancialTrxn::create($financialTrxnParams, $trxnEntityTable);
+    $trxnEntityParams = array(
+      'entity_table' => 'civicrm_contact',
+      'entity_id' => CRM_Core_Session::singleton()->get('userID'),
+      'amount' => $params['amount'],
+      'financial_trxn_id' => $financialTrxn->id,
+    );
+    civicrm_api3('EntityFinancialTrxn', 'create', $trxnEntityParams);
   }
 
 }
