@@ -182,4 +182,65 @@ function generaljournal_civicrm_navigationMenu(&$menu) {
     'separator' => 0,
   ));
   _generaljournal_civix_navigationMenu($menu);
-} 
+}
+
+/**
+ * Implements hook_civicrm_transactionListQuery().
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_transactionListQuery
+ *
+ */
+function generaljournal_civicrm_transactionListQuery(&$sql, $where, $limit) {
+  $sql = "SELECT 
+    ft.id, 
+    ft.payment_instrument_id AS payment_method, 
+    cc.contact_id AS contact_id, 
+    cc.id AS contributionID, 
+    c.sort_name AS sort_name, 
+    ft.total_amount AS amount, 
+    ft.trxn_id AS trxn_id, 
+    c.contact_type AS contact_type, 
+    c.contact_sub_type AS contact_sub_type, 
+    ft.trxn_date AS transaction_date, 
+    ftype.name AS financial_type, 
+    ft.currency AS currency, 
+    ft.status_id AS status, 
+    ft.check_number AS check_number
+    FROM civicrm_financial_trxn ft
+    INNER JOIN civicrm_entity_financial_trxn eft ON (eft.financial_trxn_id = ft.id AND eft.entity_table='civicrm_contribution')
+    INNER JOIN civicrm_contribution cc ON cc.id = eft.entity_id 
+    LEFT JOIN civicrm_financial_type ftype ON ftype.id = cc.financial_type_id
+    LEFT JOIN civicrm_contact c ON c.id = cc.contact_id
+    LEFT JOIN civicrm_entity_batch ON civicrm_entity_batch.entity_table = 'civicrm_financial_trxn' AND civicrm_entity_batch.entity_id = ft.id
+    LEFT JOIN civicrm_contribution_soft ccs ON ccs.contribution_id = cc.id
+    WHERE ({$where})
+    UNION
+    SELECT 
+    ft.id, 
+    ft.payment_instrument_id AS payment_method, 
+    NULL AS contact_id, 
+    NULL AS contributionID, 
+    CONCAT('JE: Debit ', IFNULL(fa_debit.accounting_code,'Acct Code missing'), ', Credit ', IFNULL(fa_credit.accounting_code,'Acct Code missing')) AS sort_name, 
+    ft.total_amount AS amount, 
+    ft.trxn_id AS trxn_id, 
+    NULL AS contact_type, 
+    NULL AS contact_sub_type, 
+    ft.trxn_date AS transaction_date, 
+    NULL AS financial_type, 
+    ft.currency AS currency, 
+    ft.status_id AS status, 
+    ft.check_number AS check_number
+    FROM civicrm_financial_trxn ft
+    INNER JOIN civicrm_entity_financial_trxn eft ON (eft.financial_trxn_id = ft.id AND eft.entity_table='civicrm_financial_item')
+    INNER JOIN civicrm_financial_item fi ON eft.entity_id=fi.id
+    INNER JOIN civicrm_option_value ov ON (fi.status_id=ov.value AND ov.name='Other')
+    INNER JOIN civicrm_option_group og ON (ov.option_group_id=og.id AND og.name='financial_item_status')
+    INNER JOIN civicrm_financial_account fa_debit ON fi.financial_account_id=fa_debit.id
+    INNER JOIN civicrm_financial_account fa_credit ON ft.to_financial_account_id=fa_credit.id
+    LEFT JOIN civicrm_entity_batch ON civicrm_entity_batch.entity_table = 'civicrm_financial_trxn' AND civicrm_entity_batch.entity_id = ft.id
+    WHERE ({$where})";
+
+  if (isset($limit)) {
+    $sql .= "{$limit}";
+  }
+}
