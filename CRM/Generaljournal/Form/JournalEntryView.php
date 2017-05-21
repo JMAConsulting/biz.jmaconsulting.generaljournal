@@ -31,7 +31,7 @@ class CRM_Generaljournal_Form_JournalEntryView extends CRM_Core_Form {
       'from_financial_account' => $result['financial_account_id.name'],
       'trxn_date' => CRM_Utils_Date::customFormat($trxnDetails['financial_trxn_id.trxn_date'], $dateFormat),
       'total_amount' => CRM_Utils_Money::format($trxnDetails['financial_trxn_id.total_amount'],$trxnDetails['financial_trxn_id.currency']),
-      'status_id' => CRM_Core_PseudoConstant::getLabel('CRM_Financial_BAO_FinancialItem', 'status_id', $trxnDetails['financial_trxn_id.status_id']),
+      'status_id' => CRM_Core_PseudoConstant::getLabel('CRM_Contribution_BAO_Contribution', 'contribution_status_id', $trxnDetails['financial_trxn_id.status_id']),
     );
     $this->assign('trxnDetails', $trxnDetails);
   }

@@ -22,8 +22,9 @@ class CRM_Generaljournal_Form_JournalEntry extends CRM_Core_Form {
     if (!($this->_action & CRM_Core_Action::ADD)) {
       CRM_Core_Error::fatal(ts('This form cannot be used to edit/delete General Journal entry.'));
     }
-    // TODO: include only open Batches
-    $this->_openBatches = CRM_Batch_BAO_Batch::getBatches();
+    if (class_exists('CRM_EasyBatch_BAO_EasyBatch')) {
+      $this->_openBatches = CRM_EasyBatch_BAO_EasyBatch::getAllNonAutoBatches();
+    }
     parent::preProcess();
   }
 
@@ -51,7 +52,7 @@ class CRM_Generaljournal_Form_JournalEntry extends CRM_Core_Form {
 
     $this->add('text', 'description', ts('Description'));
 
-    if (Civi::settings()->get('display_financial_batch')) {
+    if (class_exists('CRM_EasyBatch_BAO_EasyBatch') && Civi::settings()->get('display_financial_batch')) {
       $this->add('select', 'batch_id',
         ts('Financial Batch'),
         $this->_openBatches
@@ -123,9 +124,11 @@ class CRM_Generaljournal_Form_JournalEntry extends CRM_Core_Form {
    */
   public function postProcess() {
     $submittedValues = $this->controller->exportValues($this->_name);
-
+    $this->assign('backendFormSubmit', TRUE);
+    $this->assign('financialEasyBatchId', CRM_Utils_Array::value('batch_id', $submittedValues));
     // Add Journal entry
     CRM_Generaljournal_BAO_JournalEntries::createJournalEntry($submittedValues);
+    $this->assign('financialEasyBatchId', NULL);
 
     CRM_Core_Session::setStatus(ts('General Journal entry has been created.'), ts('Saved'), 'success');
     $buttonName = $this->controller->getButtonName();

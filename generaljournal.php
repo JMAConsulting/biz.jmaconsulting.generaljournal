@@ -197,6 +197,12 @@ function generaljournal_civicrm_alterBatchTransactionListQuery(&$query, $batchId
       $query['orderBy']  = ' ORDER BY ' . CRM_Utils_Type::escape($params['sort'], 'String');
     }
   }
+  if (!$batchTransactions) {
+    $where = " civicrm_entity_batch.batch_id = {$batchId} ";
+  }
+  else {
+    $where = " civicrm_entity_batch.batch_id IS NULL ";
+  }
   $query['groupBy'] .= "
     UNION
     SELECT 
@@ -209,7 +215,7 @@ function generaljournal_civicrm_alterBatchTransactionListQuery(&$query, $batchId
     ft.trxn_id AS trxn_id, 
     NULL AS contact_type, 
     NULL AS contact_sub_type, 
-    ft.trxn_date AS transaction_date, 
+    ft.trxn_date AS transaction_date,
     NULL AS financial_type, 
     ft.currency AS currency, 
     ft.status_id AS status, 
@@ -222,7 +228,7 @@ function generaljournal_civicrm_alterBatchTransactionListQuery(&$query, $batchId
     INNER JOIN civicrm_financial_account fa_debit ON fi.financial_account_id=fa_debit.id
     INNER JOIN civicrm_financial_account fa_credit ON ft.to_financial_account_id=fa_credit.id
     LEFT JOIN civicrm_entity_batch ON civicrm_entity_batch.entity_table = 'civicrm_financial_trxn' AND civicrm_entity_batch.entity_id = ft.id
-    WHERE ({$query['where']})";
+    WHERE ($where)";
 }
 
 /**
