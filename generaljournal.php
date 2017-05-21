@@ -185,35 +185,19 @@ function generaljournal_civicrm_navigationMenu(&$menu) {
 }
 
 /**
- * Implements hook_civicrm_transactionListQuery().
+ * Implements hook_civicrm_alterBatchTransactionListQuery().
  *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_transactionListQuery
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_alterBatchTransactionListQuery
  *
  */
-function generaljournal_civicrm_transactionListQuery(&$sql, $where, $limit) {
-  $sql = "SELECT 
-    ft.id, 
-    ft.payment_instrument_id AS payment_method, 
-    cc.contact_id AS contact_id, 
-    cc.id AS contributionID, 
-    c.sort_name AS sort_name, 
-    ft.total_amount AS amount, 
-    ft.trxn_id AS trxn_id, 
-    c.contact_type AS contact_type, 
-    c.contact_sub_type AS contact_sub_type, 
-    ft.trxn_date AS transaction_date, 
-    ftype.name AS financial_type, 
-    ft.currency AS currency, 
-    ft.status_id AS status, 
-    ft.check_number AS check_number
-    FROM civicrm_financial_trxn ft
-    INNER JOIN civicrm_entity_financial_trxn eft ON (eft.financial_trxn_id = ft.id AND eft.entity_table='civicrm_contribution')
-    INNER JOIN civicrm_contribution cc ON cc.id = eft.entity_id 
-    LEFT JOIN civicrm_financial_type ftype ON ftype.id = cc.financial_type_id
-    LEFT JOIN civicrm_contact c ON c.id = cc.contact_id
-    LEFT JOIN civicrm_entity_batch ON civicrm_entity_batch.entity_table = 'civicrm_financial_trxn' AND civicrm_entity_batch.entity_id = ft.id
-    LEFT JOIN civicrm_contribution_soft ccs ON ccs.contribution_id = cc.id
-    WHERE ({$where})
+function generaljournal_civicrm_alterBatchTransactionListQuery(&$query, $batchId, $params, $batchTransactions) {
+  if ($query['orderBy']) {
+    $query['orderBy'] = " ORDER BY id ";
+    if (!empty($params['sort'])) {
+      $query['orderBy']  = ' ORDER BY ' . CRM_Utils_Type::escape($params['sort'], 'String');
+    }
+  }
+  $query['groupBy'] .= "
     UNION
     SELECT 
     ft.id, 
@@ -238,9 +222,27 @@ function generaljournal_civicrm_transactionListQuery(&$sql, $where, $limit) {
     INNER JOIN civicrm_financial_account fa_debit ON fi.financial_account_id=fa_debit.id
     INNER JOIN civicrm_financial_account fa_credit ON ft.to_financial_account_id=fa_credit.id
     LEFT JOIN civicrm_entity_batch ON civicrm_entity_batch.entity_table = 'civicrm_financial_trxn' AND civicrm_entity_batch.entity_id = ft.id
-    WHERE ({$where})";
+    WHERE ({$query['where']})";
+}
 
-  if (isset($limit)) {
-    $sql .= "{$limit}";
+/**
+ * Implements hook_civicrm_links().
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_links
+ *
+ */
+function generaljournal_civicrm_links($op, $objectName, &$objectId, &$links, &$mask = NULL, &$values = array()) {
+  if ($objectName == 'FinancialItem' && 'financialItem.batch.row' == $op) {
+    foreach ($links as $id => $link) {
+      if (in_array(strtolower($link['bit']), array('view'))) {
+        $links[$id] = array(
+          'name' => ts('View'),
+          'url' => 'civicrm/contribute/journalentry',
+          'qs' => 'reset=1&action=view&trxnid=%%id%%',
+          'title' => ts('View General Entry'),
+          'bit' => 'View',
+        );
+      }
+    }
   }
 }
