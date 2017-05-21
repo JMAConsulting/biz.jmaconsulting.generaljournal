@@ -10,6 +10,15 @@
     <component>CiviContribute</component>
   </item>
   <item>
+    <path>civicrm/contribute/journalentry/view</path>
+    <title>View General Journal Entry</title>
+    <page_callback>CRM_Generaljournal_Form_JournalEntryView</page_callback>
+    <access_arguments>access CiviContribute,administer Accounting</access_arguments>
+    <page_type>1</page_type>
+    <weight>640</weight>
+    <component>CiviContribute</component>
+  </item>
+  <item>
     <path>civicrm/contribute/journalentries</path>
     <title>Manage General Journal Entries</title>
     <page_callback>CRM_Generaljournal_Page_JournalEntries</page_callback>

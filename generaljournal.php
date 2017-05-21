@@ -232,12 +232,14 @@ function generaljournal_civicrm_alterBatchTransactionListQuery(&$query, $batchId
  *
  */
 function generaljournal_civicrm_links($op, $objectName, &$objectId, &$links, &$mask = NULL, &$values = array()) {
-  if ($objectName == 'FinancialItem' && 'financialItem.batch.row' == $op) {
+  if ($objectName == 'FinancialItem' && 'financialItem.batch.row' == $op
+    && empty($values['contid'])
+  ) {
     foreach ($links as $id => $link) {
       if (in_array(strtolower($link['bit']), array('view'))) {
         $links[$id] = array(
           'name' => ts('View'),
-          'url' => 'civicrm/contribute/journalentry',
+          'url' => 'civicrm/contribute/journalentry/view',
           'qs' => 'reset=1&action=view&trxnid=%%id%%',
           'title' => ts('View General Entry'),
           'bit' => 'View',
