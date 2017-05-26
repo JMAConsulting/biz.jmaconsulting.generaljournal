@@ -87,7 +87,6 @@ function generaljournal_civicrm_managed(&$entities) {
   $result = civicrm_api3('OptionValue', 'get', array(
     'option_group_id' => 'financial_item_status',
     'name' => 'Other',
-    'return' => array('value'),
     'options' => array('limit' => 1),
   ));
   $apiParams = array(
@@ -100,7 +99,7 @@ function generaljournal_civicrm_managed(&$entities) {
     'is_reserved' => TRUE,
   );
   if ($result['values']) {
-    $apiParams['id'] = $result['values'][$result['id']]['value'];
+    $apiParams['id'] = $result['id'];
   }
   $entities[] = array(
     'module' => 'biz.jmaconsulting.generaljournal',
