@@ -218,6 +218,7 @@ function generaljournal_civicrm_alterBatchTransactionListQuery(&$query, $batchId
     NULL AS contact_type, 
     NULL AS contact_sub_type, 
     ft.trxn_date AS transaction_date,
+    NULL as receive_date,
     NULL AS financial_type, 
     ft.currency AS currency, 
     ft.status_id AS status, 
