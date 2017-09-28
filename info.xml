@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <extension key="biz.jmaconsulting.generaljournal" type="module">
   <file>generaljournal</file>
-  <name>General Journal Bookkeeping</name>
-  <description>The general journal is part of the accounting record keeping system. When an event occurs that must be recorded, it is called a transaction, and may be recorded in a specialty journal or in the general journal.</description>
+  <name>General Journal Entries</name>
+  <description>General journal bookkeeping entries allow amounts to be moved between any two accounts on a specific date. This extension allows users to enter and review general journal bookkeeping entries in CiviCRM. They can later be exported as part of financial batches for import into QuickBooks or other accounting systems.</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>JMA Consulting</author>
-    <email>joe.murray@jmaconsulting.biz</email>
+    <email>support@jmaconsulting.biz</email>
   </maintainer>
   <urls>
     <url desc="Main Extension Page">https://github.com/JMAConsulting/biz.jmaconsulting.mte/blob/master/README.md</url>
@@ -16,11 +16,11 @@
   </urls>
   <releaseDate>2017-02-27</releaseDate>
   <version>1.0</version>
-  <develStage>alpha</develStage>
+  <develStage>stable</develStage>
   <compatibility>
     <ver>4.7</ver>
   </compatibility>
-  <comments></comments>
+  <comments>The development of this extension was sponsored by the IIDA, and benefited from feedback from Brian Shaughnessy at LCD Systems.</comments>
   <civix>
     <namespace>CRM/Generaljournal</namespace>
   </civix>
