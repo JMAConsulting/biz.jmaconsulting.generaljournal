@@ -21,8 +21,8 @@ Installation
   * Beside General Journal Entries, click Download.
   * Review the information, then click Download and Install.
   
-  Use
-  ===
+Use
+===
   
   * To add a new general journal entry, navigate to Contributions >> New General Journal Entry, fill in the form fields, and click Save.
   * To view existing general journal entries, navigate to Contributions >> Manage General Journal Entries.
