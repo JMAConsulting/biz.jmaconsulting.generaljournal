@@ -1,8 +1,6 @@
 General Journal Entries
 =======================
 
-# biz.jmaconsulting.generaljournal
-
 General journal bookkeeping entries allow amounts to be moved between any two accounts on a specific date. This extension allows users to enter and review general journal bookkeeping entries in CiviCRM. They can later be exported as part of financial batches for import into QuickBooks or other accounting systems.
 
 Installation
@@ -29,3 +27,6 @@ Installation
   * To add a new general journal entry, navigate to Contributions >> New General Journal Entry, fill in the form fields, and click Save.
   * To view existing general journal entries, navigate to Contributions >> Manage General Journal Entries.
   
+JMA Consulting develops and maintains this General Journal Entry extension. 
+
+Many thanks to IIDA for sponsoring its development. Thanks also to LCD Services for collaborating during its development.
