@@ -20,7 +20,7 @@
   <compatibility>
     <ver>4.7</ver>
   </compatibility>
-  <comments>The development of this extension was sponsored by the IIDA, and benefited from feedback from Brian Shaughnessy at LCD Systems.</comments>
+  <comments>Many thanks to IIDA for sponsoring the development of this extension, and also to LCD Services for collaborating during its development.</comments>
   <civix>
     <namespace>CRM/Generaljournal</namespace>
   </civix>
