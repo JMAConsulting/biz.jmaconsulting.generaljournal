@@ -27,6 +27,6 @@ Use
   * To add a new general journal entry, navigate to Contributions >> New General Journal Entry, fill in the form fields, and click Save.
   * To view existing general journal entries, navigate to Contributions >> Manage General Journal Entries.
   
-JMA Consulting develops and maintains this General Journal Entry extension. 
+JMA Consulting develops and maintains this extension. 
 
 Many thanks to IIDA for sponsoring its development. Thanks also to LCD Services for collaborating during its development.
