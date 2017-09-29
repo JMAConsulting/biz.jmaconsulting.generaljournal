@@ -1,10 +1,12 @@
-General Journal Entries
-=======================
+# General Journal Entries
+
+#### biz.jmaconsulting.generaljournal
+
+# Overview
 
 General journal bookkeeping entries allow amounts to be moved between any two accounts on a specific date. This extension allows users to enter and review general journal bookkeeping entries in CiviCRM. They can later be exported as part of financial batches for import into QuickBooks or other accounting systems.
 
-Installation
-============
+# Installation
 
 * If you have not already done so, setup Extensions Directory 
   * Go to Administer >> System Settings >> Directories
