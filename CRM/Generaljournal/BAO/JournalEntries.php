@@ -118,12 +118,13 @@ class CRM_Generaljournal_BAO_JournalEntries extends CRM_Core_DAO {
       'net_amount' => $params['amount'],
       'currency' => $params['currency'],
       'status_id' => $trxnStatusID,
-    );
-    $trxnEntityTable = array(
       'entity_table' => "civicrm_financial_item",
       'entity_id' => $financialItem['id'],
     );
-    $financialTrxn = CRM_Core_BAO_FinancialTrxn::create($financialTrxnParams, $trxnEntityTable);
+    $financialTrxn = CRM_Core_BAO_FinancialTrxn::create($financialTrxnParams);
+    /**
+    * this API call throw error as 'civicrm_contact is not a valid option for field entity_table' means EntityFinancialTrxn does not support civicrm_contact entity entries, 
+    *  commit - https://github.com/civicrm/civicrm-core/commit/becebb6340ff30baf9c2439327f457d75eee2c45#diff-e3ed4ec33f4a2ba1383da21e461ebba9a5ffd55adcc2d86a5f5fb638ac129f04R25
     $trxnEntityParams = array(
       'entity_table' => 'civicrm_contact',
       'entity_id' => CRM_Core_Session::singleton()->get('userID'),
@@ -131,6 +132,7 @@ class CRM_Generaljournal_BAO_JournalEntries extends CRM_Core_DAO {
       'financial_trxn_id' => $financialTrxn->id,
     );
     civicrm_api3('EntityFinancialTrxn', 'create', $trxnEntityParams);
+    */
   }
 
 }
