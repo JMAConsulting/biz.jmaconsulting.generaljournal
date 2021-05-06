@@ -13,14 +13,14 @@ class CRM_Generaljournal_Form_JournalEntry extends CRM_Core_Form {
    * List of open Batches
    * @var array
    */
-  public $_openBatches;
+  public $_openBatches = [];
 
   /**
    * Set variables up before form is built.
    */
   public function preProcess() {
     if (!($this->_action & CRM_Core_Action::ADD)) {
-      CRM_Core_Error::fatal(ts('This form cannot be used to edit/delete General Journal entry.'));
+      CRM_Core_Error::statusBounce(ts('This form cannot be used to edit/delete General Journal entry.'));
     }
     if (class_exists('CRM_EasyBatch_BAO_EasyBatch')) {
       $this->_openBatches = CRM_EasyBatch_BAO_EasyBatch::getAllNonAutoBatches();
